@@ -57,10 +57,10 @@ class Application(object):
         results = OrderedDict()
         for address in network.range():
             data = {}
-            if network.check_ping:
-                data['ping'] = network.tool_ping.results[address]
-            if network.check_host:
-                data['hostname'] = network.tool_hostname.results[address]
+            data['ping'] = (network.tool_ping.results[address]
+                            if network.check_ping else None)
+            data['hostname'] = (network.tool_hostname.results[address]
+                                if network.check_host else None)
             results[address] = data
         for data in results:
             print(data, results[data])
