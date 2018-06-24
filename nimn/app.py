@@ -35,12 +35,12 @@ class Application(object):
         """Configure the application during the startup"""
         self.networks = self.dbhosts.list_networks()
 
-    def run(self, network_name):
+    def run(self):
         """Execute the application"""
-        network = self.networks[network_name]
-        network.tool_ping.interface = 'eth0'
-        network.tool_arping.interface = 'eth0'
-        network.tool_hostname.interface = 'eth0'
+        network = self.networks[self.settings.arguments.network]
+        network.tool_ping.interface = self.settings.arguments.interface
+        network.tool_arping.interface = self.settings.arguments.interface
+        network.tool_hostname.interface = self.settings.arguments.interface
         for address in network.range():
             if network.check_ping:
                 # Check the host using PING

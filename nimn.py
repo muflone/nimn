@@ -25,4 +25,4 @@ if __name__ == '__main__':
     # Start the application
     app = Application()
     app.startup()
-    app.run(network_name='Casa')
+    app.run()
