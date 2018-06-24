@@ -18,7 +18,13 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
-import queue
+import sys
+
+if sys.version_info.major == 3:
+    import queue
+else:
+    import Queue as queue
+
 import threading
 
 

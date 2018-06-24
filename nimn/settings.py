@@ -22,7 +22,12 @@ import os
 import os.path
 import optparse
 import time
-import configparser
+import sys
+
+if sys.version_info.major == 3:
+    import configparser
+else:
+    import ConfigParser as configparser
 
 from .functions import *
 from .constants import *
