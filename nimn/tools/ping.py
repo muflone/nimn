@@ -28,14 +28,19 @@ NUM_WORKERS = 20
 
 class Ping(ManagedQueue):
     def __init__(self):
+        self.interface = None
         ManagedQueue.__init__(self, self.do_process, NUM_WORKERS)
 
     def do_process(self, address):
         command = ['ping',
                    '-n' if platform.system().lower()=='windows' else '-c',
-                   '1',
-                   address
-                  ]
+                   '1']
+        # If provided, add interface name
+        if self.interface:
+            command.append('-I')
+            command.append(self.interface)
+        # Add destination address
+        command.append(address)
         process = subprocess.Popen(command,
                                    stdout=subprocess.PIPE,
                                    stderr = subprocess.PIPE)

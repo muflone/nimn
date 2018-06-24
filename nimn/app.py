@@ -38,6 +38,8 @@ class Application(object):
     def run(self, network_name):
         """Execute the application"""
         network = self.networks[network_name]
+        network.tool_ping.interface = 'eth0'
+        network.tool_hostname.interface = 'eth0'
         for address in network.range():
             if network.check_ping:
                 # Check the host using PING
