@@ -58,6 +58,6 @@ class ARPing(ManagedQueue):
             if 'reply' in line.lower() and address in line:
                 matches = re.findall(match, line)
                 if matches:
-                    mac_address = matches[0]
+                    mac_address = str(matches[0])
                     break
         return mac_address
