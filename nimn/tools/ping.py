@@ -40,4 +40,4 @@ class Ping(ManagedQueue):
                                    stdout=subprocess.PIPE,
                                    stderr = subprocess.PIPE)
         process.wait()
-        return process.poll()
+        return process.poll() == 0
