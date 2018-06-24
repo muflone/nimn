@@ -1,0 +1,20 @@
+language: python
+python:
+  - "3.5"
+virtualenv:
+  system_site_packages: true
+sudo: false
+addons:
+  apt:
+    packages:
+        - pep8
+        - pychecker
+        - python-pysnmp4
+install:
+  - pip install -r requirements.txt
+script:
+  - python -m compileall .
+  - pep8 . || true
+  - pychecker nimn
+  - python setup.py install --optimize=1 --root=build
+  - ls -laR build
