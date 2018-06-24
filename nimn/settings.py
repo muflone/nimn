@@ -39,6 +39,7 @@ class Settings(object):
     def __init__(self):
         # Command line options and arguments
         parser = argparse.ArgumentParser(description='Find new devices in my network')
+        parser.set_defaults(verbose_level=VERBOSE_LEVEL_NORMAL)
         parser.add_argument('-I', '--iface',
                             type=str,
                             dest='interface',
