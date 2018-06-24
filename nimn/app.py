@@ -42,16 +42,23 @@ class Application(object):
             if network.check_ping:
                 # Check the host using PING
                 network.tool_ping.execute(address)
+            if network.check_host:
+                # Get hostname from the address
+                network.tool_hostname.execute(address)
         # Start the tools threads
         network.tool_ping.start()
+        network.tool_hostname.start()
         # Awaits the tools to complete
         network.tool_ping.process()
+        network.tool_hostname.process()
         # Sort data and print results
         results = OrderedDict()
         for address in network.range():
             data = {}
             if network.check_ping:
                 data['ping'] = network.tool_ping.results[address]
+            if network.check_host:
+                data['hostname'] = network.tool_hostname.results[address]
             results[address] = data
         for data in results:
             print(data, results[data])

@@ -18,32 +18,16 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
-import ipaddress
+import socket
 
-from .tools.ping import Ping
-from .tools.hostname import Hostname
+from .managed_queue import ManagedQueue
+
+NUM_WORKERS = 10
 
 
-class Network(object):
-    def __init__(self, name, ip1, ip2, check_mac, check_host, check_ping):
-        self.name = name
-        self.ip1 = ip1
-        self.ip2 = ip2
-        self.check_mac = check_mac
-        self.check_host = check_host
-        self.check_ping = check_ping
-        self.tool_ping = Ping()
-        self.tool_hostname = Hostname()
+class Hostname(ManagedQueue):
+    def __init__(self):
+        ManagedQueue.__init__(self, self.do_process, NUM_WORKERS)
 
-    def __repr__(self):
-        return '<nimn.Network: %s>' % (self.name, )
-
-    def range(self):
-        """Get the list of all the IPs in the network"""
-        ip1 = ipaddress.IPv4Address(self.ip1)
-        ip2 = ipaddress.IPv4Address(self.ip2)
-        results = []
-        while ip1 <= ip2:
-            results.append(str(ip1))
-            ip1 += 1
-        return results
+    def do_process(self, address):
+        return socket.getfqdn(address)
