@@ -33,7 +33,7 @@ class Ping(ManagedQueue):
 
     def do_process(self, address):
         command = ['ping',
-                   '-n' if platform.system().lower()=='windows' else '-c',
+                   '-n' if platform.system().lower() == 'windows' else '-c',
                    '1']
         # If provided, add interface name
         if self.interface:

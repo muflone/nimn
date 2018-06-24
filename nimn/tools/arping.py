@@ -44,7 +44,7 @@ class ARPing(ManagedQueue):
         command.append(address)
         process = subprocess.Popen(command,
                                    stdout=subprocess.PIPE,
-                                   stderr = subprocess.PIPE)
+                                   stderr=subprocess.PIPE)
         # Get resulting MAC address
         (stdout, stderr) = process.communicate()
         match = re.compile('(?:[0-9a-fA-F]:?){12}')
