@@ -55,7 +55,7 @@ class ARPing(ManagedQueue):
         match = re.compile('(?:[0-9a-fA-F]:?){12}')
         mac_address = None
         for line in stdout.decode('utf-8').split('\n'):
-            if 'reply' in line and address in line:
+            if 'reply' in line.lower() and address in line:
                 matches = re.findall(match, line)
                 if matches:
                     mac_address = matches[0]
