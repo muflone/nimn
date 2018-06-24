@@ -39,19 +39,25 @@ class Application(object):
         """Execute the application"""
         network = self.networks[network_name]
         network.tool_ping.interface = 'eth0'
+        network.tool_arping.interface = 'eth0'
         network.tool_hostname.interface = 'eth0'
         for address in network.range():
             if network.check_ping:
                 # Check the host using PING
                 network.tool_ping.execute(address)
+            if network.check_arping:
+                # Check the host using ARPING
+                network.tool_arping.execute(address)
             if network.check_host:
                 # Get hostname from the address
                 network.tool_hostname.execute(address)
         # Start the tools threads
         network.tool_ping.start()
+        network.tool_arping.start()
         network.tool_hostname.start()
         # Awaits the tools to complete
         network.tool_ping.process()
+        network.tool_arping.process()
         network.tool_hostname.process()
         # Sort data and print results
         results = OrderedDict()
@@ -59,6 +65,8 @@ class Application(object):
             data = {}
             data['ping'] = (network.tool_ping.results[address]
                             if network.check_ping else None)
+            data['arping'] = (network.tool_arping.results[address]
+                              if network.check_arping else None)
             data['hostname'] = (network.tool_hostname.results[address]
                                 if network.check_host else None)
             results[address] = data
