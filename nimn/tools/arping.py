@@ -33,13 +33,18 @@ class ARPing(ManagedQueue):
         ManagedQueue.__init__(self, self.do_process, NUM_WORKERS)
 
     def do_process(self, address):
-        command = ['arping',
-                   '-n' if platform.system().lower()=='windows' else '-c',
-                   '1']
-        # If provided, add interface name
-        if self.interface:
-            command.append('-I')
-            command.append(self.interface)
+        if platform.system().lower() == 'windows':
+            command = ['arp-ping',
+                       '-n',
+                       '1']
+        else:
+            command = ['arping',
+                       '-c',
+                       '1']
+            # If provided, add interface name
+            if self.interface:
+                command.append('-I')
+                command.append(self.interface)
         # Add destination address
         command.append(address)
         process = subprocess.Popen(command,
@@ -50,7 +55,7 @@ class ARPing(ManagedQueue):
         match = re.compile('(?:[0-9a-fA-F]:?){12}')
         mac_address = None
         for line in stdout.decode('utf-8').split('\n'):
-            if 'reply from' in line and address in line:
+            if 'reply' in line and address in line:
                 matches = re.findall(match, line)
                 if matches:
                     mac_address = matches[0]
