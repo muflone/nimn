@@ -65,7 +65,7 @@ class Settings(object):
         parser.add_argument('network',
                             type=str,
                             action='store',
-                            help='network name')
+                            help='network name or network range')
         self.arguments = parser.parse_args()
 
         # Parse settings from the configuration file

@@ -23,6 +23,7 @@ from collections import OrderedDict
 from .constants import *
 from .settings import Settings
 from .dbhosts import DBHosts
+from .network import Network
 
 
 class Application(object):
@@ -41,6 +42,16 @@ class Application(object):
             # Use a saved configuration for network
             networks_list = self.dbhosts.list_networks()
             network = networks_list[self.settings.arguments.network]
+        else:
+            # Use the command line arguments for network
+            ip1 = self.settings.arguments.network
+            ip2 = ip1
+            network = Network(name='-',
+                              ip1=ip1,
+                              ip2=ip2,
+                              check_host=True,
+                              check_ping=True,
+                              check_arping=True)
         network.tool_ping.interface = self.settings.arguments.interface
         network.tool_arping.interface = self.settings.arguments.interface
         network.tool_hostname.interface = self.settings.arguments.interface
