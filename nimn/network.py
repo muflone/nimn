@@ -25,6 +25,9 @@ from .tools.ping import Ping
 from .tools.arping import ARPing
 from .tools.hostname import Hostname
 
+if sys.version_info.major == 3:
+    unicode = str
+
 
 class Network(object):
     def __init__(self, name, ip1, ip2, check_host, check_ping, check_arping):
@@ -43,8 +46,8 @@ class Network(object):
 
     def range(self):
         """Get the list of all the IPs in the network"""
-        ip1 = ipaddress.IPv4Address(self.ip1)
-        ip2 = ipaddress.IPv4Address(self.ip2)
+        ip1 = ipaddress.IPv4Address(unicode(self.ip1))
+        ip2 = ipaddress.IPv4Address(unicode(self.ip2))
         results = []
         while ip1 <= ip2:
             results.append(str(ip1))
@@ -66,8 +69,5 @@ def network_cidr(cidr):
     Return the first host and the last host of a network CIDR in the form of
     x.x.x.x/n (e.g. 192.168.1.8/24)
     """
-    if sys.version_info.major == 3:
-        hosts = list(ipaddress.ip_network(cidr).hosts())
-    else:
-        hosts = list(ipaddress.ip_network(unicode(cidr)).hosts())
+    hosts = list(ipaddress.ip_network(unicode(cidr)).hosts())
     return (hosts[0], hosts[-1])
