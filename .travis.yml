@@ -17,5 +17,3 @@ script:
   - python -m compileall .
   - pep8 . || true
   - pychecker nimn
-  - python setup.py install --optimize=1 --root=build
-  - ls -laR build
