@@ -90,5 +90,6 @@ class Application(object):
                                 if network.check_host else None)
             results[address] = data
         for data in results:
-            print(data, results[data])
+            print('{ip:20}{results}'.format(ip=data,
+                                            results=results[data]))
         return results
