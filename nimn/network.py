@@ -49,3 +49,12 @@ class Network(object):
             results.append(str(ip1))
             ip1 += 1
         return results
+
+
+def network_range(ip_range):
+    """
+    Return the first host and the last host of a network segment in the form of
+    x.x.x.x-y.y.y.y.y (e.g. 192.168.1.10-192.168.1.50)
+    """
+    hosts = ip_range.split('-', 1)
+    return (hosts[0], hosts[1])
