@@ -40,21 +40,21 @@ class Settings(object):
         # Command line options and arguments
         parser = argparse.ArgumentParser(description='Find new devices in my network')
         parser.set_defaults(verbose_level=VERBOSE_LEVEL_NORMAL)
-        parser.add_argument('-I', '--iface',
+        parser.add_argument('-I', '--interface',
                             type=str,
                             dest='interface',
                             action='store',
                             help='interface name to use')
+        parser.add_argument('-v', '--verbose', dest='verbose_level',
+                            action='store_const', const=VERBOSE_LEVEL_MAX,
+                            help='show error and information messages')
+        parser.add_argument('-q', '--quiet', dest='verbose_level',
+                            action='store_const', const=VERBOSE_LEVEL_QUIET,
+                            help='hide error and information messages')
         parser.add_argument('network',
                             type=str,
                             action='store',
                             help='network name')
-        parser.add_argument('-v', '--verbose', dest='verbose_level',
-                          action='store_const', const=VERBOSE_LEVEL_MAX,
-                          help='show error and information messages')
-        parser.add_argument('-q', '--quiet', dest='verbose_level',
-                          action='store_const', const=VERBOSE_LEVEL_QUIET,
-                          help='hide error and information messages')
         self.arguments = parser.parse_args()
 
         # Parse settings from the configuration file
