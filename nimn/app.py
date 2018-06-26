@@ -30,6 +30,7 @@ class Application(object):
     def __init__(self):
         """Create the application object"""
         self.settings = Settings()
+        self.arguments = self.settings.arguments
         self.dbhosts = DBHosts()
 
     def startup(self):
@@ -38,18 +39,18 @@ class Application(object):
 
     def run(self):
         """Execute the application"""
-        if self.settings.arguments.configuration:
+        if self.arguments.configuration:
             # Use a saved configuration for network
             networks_list = self.dbhosts.list_networks()
-            network = networks_list[self.settings.arguments.network]
+            network = networks_list[self.arguments.network]
         else:
             # Use the command line arguments for network
-            if '-' in self.settings.arguments.network:
-                (ip1, ip2) = network_range(self.settings.arguments.network)
-            elif '/' in self.settings.arguments.network:
-                (ip1, ip2) = network_cidr(self.settings.arguments.network)
+            if '-' in self.arguments.network:
+                (ip1, ip2) = network_range(self.arguments.network)
+            elif '/' in self.arguments.network:
+                (ip1, ip2) = network_cidr(self.arguments.network)
             else:
-                ip1 = self.settings.arguments.network
+                ip1 = self.arguments.network
                 ip2 = ip1
             network = Network(name='-',
                               ip1=ip1,
@@ -57,9 +58,9 @@ class Application(object):
                               check_host=True,
                               check_ping=True,
                               check_arping=True)
-        network.tool_ping.interface = self.settings.arguments.interface
-        network.tool_arping.interface = self.settings.arguments.interface
-        network.tool_hostname.interface = self.settings.arguments.interface
+        network.tool_ping.interface = self.arguments.interface
+        network.tool_arping.interface = self.arguments.interface
+        network.tool_hostname.interface = self.arguments.interface
         for address in network.range():
             if network.check_ping:
                 # Check the host using PING
