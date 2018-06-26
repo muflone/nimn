@@ -21,25 +21,15 @@
 import sys
 import ipaddress
 
-from .tools.ping import Ping
-from .tools.arping import ARPing
-from .tools.hostname import Hostname
-
 if sys.version_info.major == 3:
     unicode = str
 
 
 class Network(object):
-    def __init__(self, name, ip1, ip2, check_host, check_ping, check_arping):
+    def __init__(self, name, ip1, ip2):
         self.name = name
         self.ip1 = ip1
         self.ip2 = ip2
-        self.check_host = check_host
-        self.check_ping = check_ping
-        self.check_arping = check_arping
-        self.tool_ping = Ping()
-        self.tool_arping = ARPing()
-        self.tool_hostname = Hostname()
 
     def __repr__(self):
         return '<nimn.Network: %s>' % (self.name, )

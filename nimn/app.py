@@ -24,7 +24,7 @@ from .constants import *
 from .settings import Settings
 from .dbhosts import DBHosts
 from .network import Network, network_range, network_cidr
-
+from .tools import tools
 
 class Application(object):
     def __init__(self):
@@ -46,49 +46,48 @@ class Application(object):
         else:
             # Use the command line arguments for network
             if '-' in self.arguments.network:
+                # Network IP range
                 (ip1, ip2) = network_range(self.arguments.network)
             elif '/' in self.arguments.network:
+                # Network CIDR
                 (ip1, ip2) = network_cidr(self.arguments.network)
             else:
+                # Single IP address
                 ip1 = self.arguments.network
                 ip2 = ip1
             network = Network(name='-',
                               ip1=ip1,
-                              ip2=ip2,
-                              check_host=True,
-                              check_ping=True,
-                              check_arping=True)
-        network.tool_ping.interface = self.arguments.interface
-        network.tool_arping.interface = self.arguments.interface
-        network.tool_hostname.interface = self.arguments.interface
+                              ip2=ip2)
+        # Set tools interface
+        for tool in TOOLS_LIST:
+            tools[tool].interface = self.arguments.interface
+        # Cycle over all the network addresses
         for address in network.range():
-            if network.check_ping:
-                # Check the host using PING
-                network.tool_ping.execute(address)
-            if network.check_arping:
-                # Check the host using ARPING
-                network.tool_arping.execute(address)
-            if network.check_host:
-                # Get hostname from the address
-                network.tool_hostname.execute(address)
+            # Cycle over all the available tools
+            for tool in TOOLS_LIST:
+                # If the tool was enabled then execute the checks
+                if tool in self.arguments.tools:
+                    # Check the host using the tool
+                    tools[tool].execute(address)
         # Start the tools threads
-        network.tool_ping.start()
-        network.tool_arping.start()
-        network.tool_hostname.start()
+        for tool in TOOLS_LIST:
+            tools[tool].start()
         # Awaits the tools to complete
-        network.tool_ping.process()
-        network.tool_arping.process()
-        network.tool_hostname.process()
+        for tool in TOOLS_LIST:
+            tools[tool].process()
         # Sort data and print results
         results = OrderedDict()
         for address in network.range():
             data = {}
-            data['ping'] = (network.tool_ping.results[address]
-                            if network.check_ping else None)
-            data['arping'] = (network.tool_arping.results[address]
-                              if network.check_arping else None)
-            data['hostname'] = (network.tool_hostname.results[address]
-                                if network.check_host else None)
+            for tool in TOOLS_LIST:
+                if self.arguments.all_tools:
+                    # Print results for all the tools, not only the enabled
+                    data[tool] = (tools[tool].results[address]
+                                  if tool in self.arguments.tools
+                                  else None)
+                elif tool in self.arguments.tools:
+                    # Print results only for the enabled tools
+                    data[tool] = tools[tool].results[address]
             results[address] = data
         # Print results
         for data in results:

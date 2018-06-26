@@ -36,6 +36,12 @@ DOMAIN_NAME = 'nimn'
 VERBOSE_LEVEL_QUIET = 0
 VERBOSE_LEVEL_NORMAL = 1
 VERBOSE_LEVEL_MAX = 2
+# Tools
+TOOL_PING = 'ping'
+TOOL_ARPING = 'arping'
+TOOL_HOSTNAME = 'hostname'
+TOOLS_DEFAULT = (TOOL_PING, TOOL_HOSTNAME)
+TOOLS_LIST = (TOOL_PING, TOOL_ARPING, TOOL_HOSTNAME)
 
 # Paths constants
 # If there's a file data/nimn.png then the shared data are searched

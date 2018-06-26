@@ -39,12 +39,24 @@ class Settings(object):
     def __init__(self):
         # Command line options and arguments
         parser = argparse.ArgumentParser(description='Find new devices in my network')
-        parser.set_defaults(verbose_level=VERBOSE_LEVEL_NORMAL)
+        parser.set_defaults(verbose_level=VERBOSE_LEVEL_NORMAL,
+                            tools=TOOLS_DEFAULT)
         parser.add_argument('-I', '--interface',
                             type=str,
                             dest='interface',
                             action='store',
                             help='interface name to use')
+        parser.add_argument('-t', '--tools',
+                            type=str,
+                            dest='tools',
+                            action='store',
+                            nargs='+',
+                            choices=TOOLS_LIST,
+                            help='tools to use for checks')
+        parser.add_argument('-a', '--all',
+                            dest='all_tools',
+                            action='store_true',
+                            help='show all tools in response')
         parser.add_argument('-C', '--configuration',
                             dest='configuration',
                             action='store_true',

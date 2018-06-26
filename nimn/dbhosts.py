@@ -50,8 +50,5 @@ class DBHosts(object):
             results[row['name']] = Network(row['name'],
                                            row['ip_starting'],
                                            row['ip_ending'],
-                                           row['hostname_lookup'],
-                                           row['ping'],
-                                           row['arping'],
                                           )
         return results
