@@ -45,6 +45,10 @@ class Settings(object):
                             dest='interface',
                             action='store',
                             help='interface name to use')
+        parser.add_argument('-C', '--configuration',
+                            dest='configuration',
+                            action='store_true',
+                            help='use saved configuration for network name')
         parser.add_argument('-V', '--version',
                             dest='version',
                             action='version',

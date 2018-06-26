@@ -33,11 +33,14 @@ class Application(object):
 
     def startup(self):
         """Configure the application during the startup"""
-        self.networks = self.dbhosts.list_networks()
+        pass
 
     def run(self):
         """Execute the application"""
-        network = self.networks[self.settings.arguments.network]
+        if self.settings.arguments.configuration:
+            # Use a saved configuration for network
+            networks_list = self.dbhosts.list_networks()
+            network = networks_list[self.settings.arguments.network]
         network.tool_ping.interface = self.settings.arguments.interface
         network.tool_arping.interface = self.settings.arguments.interface
         network.tool_hostname.interface = self.settings.arguments.interface
