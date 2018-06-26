@@ -89,6 +89,7 @@ class Application(object):
             data['hostname'] = (network.tool_hostname.results[address]
                                 if network.check_host else None)
             results[address] = data
+        # Print results
         for data in results:
             print('{ip:20}{results}'.format(ip=data,
                                             results=results[data]))
