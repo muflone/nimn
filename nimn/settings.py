@@ -45,6 +45,13 @@ class Settings(object):
                             dest='interface',
                             action='store',
                             help='interface name to use')
+        parser.add_argument('-V', '--version',
+                            dest='version',
+                            action='version',
+                            version='{app} {version}'.format(
+                                app=APP_NAME,
+                                version=APP_VERSION),
+                            help='show version number')
         parser.add_argument('-v', '--verbose', dest='verbose_level',
                             action='store_const', const=VERBOSE_LEVEL_MAX,
                             help='show error and information messages')
