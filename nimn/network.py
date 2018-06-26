@@ -18,6 +18,7 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
+import sys
 import ipaddress
 
 from .tools.ping import Ping
@@ -65,5 +66,8 @@ def network_cidr(cidr):
     Return the first host and the last host of a network CIDR in the form of
     x.x.x.x/n (e.g. 192.168.1.8/24)
     """
-    hosts = list(ipaddress.ip_network(cidr).hosts())
+    if sys.version_info.major == 3:
+        hosts = list(ipaddress.ip_network(cidr).hosts())
+    else:
+        hosts = list(ipaddress.ip_network(unicode(cidr)).hosts())
     return (hosts[0], hosts[-1])
