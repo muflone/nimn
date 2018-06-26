@@ -20,7 +20,7 @@
 
 from collections import OrderedDict
 
-from .constants import *
+from .constants import TOOLS_LIST
 from .settings import Settings
 from .dbhosts import DBHosts
 from .network import Network, network_range, network_cidr

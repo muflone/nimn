@@ -29,10 +29,17 @@ if sys.version_info.major == 3:
 else:
     import ConfigParser as configparser
 
-from .functions import *
-from .constants import *
+from .constants import (
+  VERBOSE_LEVEL_QUIET,
+  VERBOSE_LEVEL_NORMAL,
+  VERBOSE_LEVEL_MAX,
+  FILE_SETTINGS,
+  TOOLS_DEFAULT,
+  TOOLS_LIST,
+  APP_NAME,
+  APP_VERSION,
+)
 
-SECTION_MAINWIN = 'main window'
 SECTION_APPLICATION = 'application'
 
 class Settings(object):
