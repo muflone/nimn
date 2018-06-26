@@ -58,3 +58,12 @@ def network_range(ip_range):
     """
     hosts = ip_range.split('-', 1)
     return (hosts[0], hosts[1])
+
+
+def network_cidr(cidr):
+    """
+    Return the first host and the last host of a network CIDR in the form of
+    x.x.x.x/n (e.g. 192.168.1.8/24)
+    """
+    hosts = list(ipaddress.ip_network(cidr).hosts())
+    return (hosts[0], hosts[-1])

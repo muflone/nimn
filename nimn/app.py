@@ -23,7 +23,7 @@ from collections import OrderedDict
 from .constants import *
 from .settings import Settings
 from .dbhosts import DBHosts
-from .network import Network, network_range
+from .network import Network, network_range, network_cidr
 
 
 class Application(object):
@@ -46,6 +46,8 @@ class Application(object):
             # Use the command line arguments for network
             if '-' in self.settings.arguments.network:
                 (ip1, ip2) = network_range(self.settings.arguments.network)
+            elif '/' in self.settings.arguments.network:
+                (ip1, ip2) = network_cidr(self.settings.arguments.network)
             else:
                 ip1 = self.settings.arguments.network
                 ip2 = ip1
