@@ -20,7 +20,6 @@
 
 import os
 import os.path
-import argparse
 import time
 import sys
 
@@ -30,71 +29,22 @@ else:
     import ConfigParser as configparser
 
 from .constants import (
-  VERBOSE_LEVEL_QUIET,
   VERBOSE_LEVEL_NORMAL,
   VERBOSE_LEVEL_MAX,
   FILE_SETTINGS,
-  TOOLS_DEFAULT,
-  TOOLS_LIST,
-  APP_NAME,
-  APP_VERSION,
 )
 
 SECTION_APPLICATION = 'application'
 
 class Settings(object):
-    def __init__(self):
-        # Command line options and arguments
-        parser = argparse.ArgumentParser(description='Find new devices in my network')
-        parser.set_defaults(verbose_level=VERBOSE_LEVEL_NORMAL,
-                            tools=TOOLS_DEFAULT)
-        parser.add_argument('-I', '--interface',
-                            type=str,
-                            dest='interface',
-                            action='store',
-                            help='interface name to use')
-        parser.add_argument('-t', '--tools',
-                            type=str,
-                            dest='tools',
-                            action='store',
-                            nargs='+',
-                            choices=TOOLS_LIST,
-                            help='tools to use for checks')
-        parser.add_argument('-a', '--all',
-                            dest='all_tools',
-                            action='store_true',
-                            help='show all tools in response')
-        parser.add_argument('-C', '--configuration',
-                            dest='configuration',
-                            action='store_true',
-                            help='use saved configuration for network name')
-        parser.add_argument('-V', '--version',
-                            dest='version',
-                            action='version',
-                            version='{app} {version}'.format(
-                                app=APP_NAME,
-                                version=APP_VERSION),
-                            help='show version number')
-        parser.add_argument('-v', '--verbose', dest='verbose_level',
-                            action='store_const', const=VERBOSE_LEVEL_MAX,
-                            help='show error and information messages')
-        parser.add_argument('-q', '--quiet', dest='verbose_level',
-                            action='store_const', const=VERBOSE_LEVEL_QUIET,
-                            help='hide error and information messages')
-        parser.add_argument('network',
-                            type=str,
-                            action='store',
-                            help='network name or network range')
-        self.arguments = parser.parse_args()
-
+    def __init__(self, command_line):
+        self.command_line = command_line
         # Parse settings from the configuration file
         self.config = configparser.RawConfigParser()
-        # Determine which filename to use for settings
         self.filename = FILE_SETTINGS
-        if self.filename:
-            self.logText('Loading settings from %s' % self.filename,
-                         VERBOSE_LEVEL_MAX)
-            self.config.read(self.filename)
+        self.logText('Loading settings from %s' % self.filename,
+                     VERBOSE_LEVEL_MAX)
+        self.config.read(self.filename)
 
     def get(self, section, option, default=None):
         """Get an option from a specific section"""
@@ -156,5 +106,5 @@ class Settings(object):
 
     def logText(self, text, verbose_level=VERBOSE_LEVEL_NORMAL):
         """Print a text with current date and time based on verbose level"""
-        if verbose_level <= self.arguments.verbose_level:
+        if verbose_level <= self.command_line.arguments.verbose_level:
             print('[%s] %s' % (time.strftime('%Y/%m/%d %H:%M:%S'), text))

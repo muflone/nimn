@@ -23,15 +23,18 @@ from collections import OrderedDict
 from .constants import TOOLS_LIST
 from .settings import Settings
 from .dbhosts import DBHosts
+from .command_line import CommandLine
 from .network import Network, network_range, network_cidr
 from .tools import tools
 
 class Application(object):
     def __init__(self):
         """Create the application object"""
-        self.settings = Settings()
-        self.arguments = self.settings.arguments
+        self.command_line = CommandLine()
+        self.arguments = self.command_line.arguments
         self.dbhosts = DBHosts()
+        self.check_command_line()
+        self.settings = Settings(self.command_line)
 
     def startup(self):
         """Configure the application during the startup"""
@@ -42,18 +45,18 @@ class Application(object):
         if self.arguments.configuration:
             # Use a saved configuration for network
             networks_list = self.dbhosts.list_networks()
-            network = networks_list[self.arguments.network]
+            network = networks_list[self.arguments.network[0]]
         else:
             # Use the command line arguments for network
-            if '-' in self.arguments.network:
+            if '-' in self.arguments.network[0]:
                 # Network IP range
-                (ip1, ip2) = network_range(self.arguments.network)
+                (ip1, ip2) = network_range(self.arguments.network[0])
             elif '/' in self.arguments.network:
                 # Network CIDR
-                (ip1, ip2) = network_cidr(self.arguments.network)
+                (ip1, ip2) = network_cidr(self.arguments.network[0])
             else:
                 # Single IP address
-                ip1 = self.arguments.network
+                ip1 = self.arguments.network[0]
                 ip2 = ip1
             network = Network(name='-',
                               ip1=ip1,
@@ -94,3 +97,15 @@ class Application(object):
             print('{ip:20}{results}'.format(ip=data,
                                             results=results[data]))
         return results
+
+    def check_command_line(self):
+        """Check command line arguments"""
+        if self.arguments.list_configurations:
+            # List networks list
+            print('Network configurations list:')
+            for network in self.dbhosts.list_networks():
+                print('  {network}'.format(network=network))
+            self.command_line.parser.exit(1)
+        elif not self.arguments.network:
+            # Missing both networks list and network name
+            self.command_line.parser.error('Network must be provided')
