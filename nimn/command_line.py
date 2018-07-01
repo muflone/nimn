@@ -16,15 +16,15 @@ class CommandLine(object):
     def __init__(self):
         """Parse command line arguments"""
         self.parser = argparse.ArgumentParser(description=APP_DESCRIPTION)
-        self.parser.set_defaults(verbose_level=VERBOSE_LEVEL_NORMAL,
-                                    tools=TOOLS_DEFAULT)
+        self.parser.set_defaults(verbose_level=VERBOSE_LEVEL_NORMAL)
         self.parser.add_argument('-I', '--interface',
-                                    type=str,
-                                    dest='interface',
-                                    action='store',
-                            help='interface name to use')
+                                 type=str,
+                                 dest='interface',
+                                 action='store',
+                                 help='interface name to use')
         self.parser.add_argument('-t', '--tools',
                                  type=str,
+                                 default=TOOLS_DEFAULT,
                                  dest='tools',
                                  action='store',
                                  nargs='+',

@@ -29,7 +29,6 @@ NUM_WORKERS = 10
 
 class ARPing(ManagedQueue):
     def __init__(self):
-        self.interface = None
         ManagedQueue.__init__(self, self.do_process, NUM_WORKERS)
 
     def do_process(self, address):

@@ -28,7 +28,6 @@ NUM_WORKERS = 20
 
 class Ping(ManagedQueue):
     def __init__(self):
-        self.interface = None
         ManagedQueue.__init__(self, self.do_process, NUM_WORKERS)
 
     def do_process(self, address):

@@ -61,7 +61,7 @@ class Application(object):
             network = Network(name='-',
                               ip1=ip1,
                               ip2=ip2)
-        # Set tools interface
+        # Set tools parameters
         for tool in TOOLS_LIST:
             tools[tool].interface = self.arguments.interface
         # Cycle over all the network addresses

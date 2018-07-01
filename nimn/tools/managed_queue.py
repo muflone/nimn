@@ -30,6 +30,9 @@ import threading
 
 class ManagedQueue(object):
     def __init__(self, cb_function, workers):
+        # Default tool values
+        self.interface = None
+        # Set callback function
         self.cb_function = cb_function
         # Queue for requests and responses
         self.queue_incoming = queue.Queue()
