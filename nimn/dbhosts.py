@@ -18,6 +18,9 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
+MAC_ADDRESS = 'MAC'
+HOSTNAME = 'HOSTNAME'
+
 from .constants import FILE_HOSTS
 from .network import Network
 
@@ -54,12 +57,25 @@ class DBHosts(object):
                                           )
         return results
 
-    def add_detection(self, ip_address, tool, response):
-        """Add a new detection record for the chosen tool"""
+    def add_detection(self, ip, mac, hostname):
+        """Add a new detection record for the ip address"""
         timestamp = time.time()
         self.cursor.execute('INSERT INTO detections '
-                            '(ip_address, timestamp, tool, response) '
+                            '(timestamp, ip, mac, hostname) '
                             'VALUES(?, ?, ?, ?)',
-                            (ip_address, timestamp, tool, response)
-                            )
+                            (int(timestamp), ip, mac, hostname)
+                           )
         self.connection.commit()
+
+    def get_detections(self, timestamp):
+        """Get detections for the specified timestamp"""
+        results = {}
+        self.cursor.execute('SELECT * FROM detections '
+                            'WHERE timestamp=?',
+                            (timestamp, ))
+        for row in self.cursor.fetchall():
+            response = {}
+            response[MAC_ADDRESS] = row['mac']
+            response[HOSTNAME] = row['hostname']
+            results[row['ip']] = response
+        return results

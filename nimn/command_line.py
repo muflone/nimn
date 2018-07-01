@@ -53,6 +53,15 @@ class CommandLine(object):
                                  action='store_const',
                                  const=VERBOSE_LEVEL_QUIET,
                                  help='hide error and information messages')
+        self.parser.add_argument('-T', '--timestamp',
+                                 type=int,
+                                 dest='timestamp',
+                                 action='store',
+                                 help='timestamp to compare')
+        self.parser.add_argument('-O', '--changed',
+                                 dest='changed',
+                                 action='store_true',
+                                 help='show only changed host during compare')
         self.parser.add_argument('network',
                                  type=str,
                                  nargs='*',
