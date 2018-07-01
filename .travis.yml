@@ -10,7 +10,6 @@ addons:
     packages:
         - pep8
         - pychecker
-        - python-pysnmp4
 install:
   - pip install -r requirements.txt
 script:
