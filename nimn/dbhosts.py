@@ -23,6 +23,7 @@ from .network import Network
 
 import sqlite3
 import os.path
+import time
 
 
 class DBHosts(object):
@@ -52,3 +53,13 @@ class DBHosts(object):
                                            row['ip_ending'],
                                           )
         return results
+
+    def add_detection(self, ip_address, tool, response):
+        """Add a new detection record for the chosen tool"""
+        timestamp = time.time()
+        self.cursor.execute('INSERT INTO detections '
+                            '(ip_address, timestamp, tool, response) '
+                            'VALUES(?, ?, ?, ?)',
+                            (ip_address, timestamp, tool, response)
+                            )
+        self.connection.commit()

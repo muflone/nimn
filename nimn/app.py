@@ -98,6 +98,10 @@ class Application(object):
         for data in results:
             print('{ip:20}{results}'.format(ip=data,
                                             results=results[data]))
+            for tool in results[data]:
+                self.dbhosts.add_detection(ip_address=data,
+                                           tool=tool,
+                                           response=results[data][tool])
         return results
 
     def check_command_line(self):
