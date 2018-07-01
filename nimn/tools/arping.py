@@ -35,11 +35,11 @@ class ARPing(ManagedQueue):
         if platform.system().lower() == 'windows':
             command = ['arp-ping',
                        '-n',
-                       '1']
+                       str(self.checks)]
         else:
             command = ['arping',
                        '-c',
-                       '1']
+                       str(self.checks)]
             # If provided, add interface name
             if self.interface:
                 command.append('-I')

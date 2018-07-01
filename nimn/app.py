@@ -64,6 +64,7 @@ class Application(object):
         # Set tools parameters
         for tool in TOOLS_LIST:
             tools[tool].interface = self.arguments.interface
+            tools[tool].checks = self.arguments.checks
         # Cycle over all the network addresses
         for address in network.range():
             # Cycle over all the available tools

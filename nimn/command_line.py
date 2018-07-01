@@ -22,6 +22,12 @@ class CommandLine(object):
                                  dest='interface',
                                  action='store',
                                  help='interface name to use')
+        self.parser.add_argument('-c', '--count',
+                                 type=int,
+                                 default=1,
+                                 dest='checks',
+                                 action='store',
+                                 help='max checks to do for each tool')
         self.parser.add_argument('-t', '--tools',
                                  type=str,
                                  default=TOOLS_DEFAULT,
