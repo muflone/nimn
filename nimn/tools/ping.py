@@ -38,6 +38,10 @@ class Ping(ManagedQueue):
         if self.interface:
             command.append('-I')
             command.append(self.interface)
+        # If provided, add timeout
+        if self.timeout:
+            command.append('-w')
+            command.append(str(self.timeout))
         # Add destination address
         command.append(address)
         process = subprocess.Popen(command,

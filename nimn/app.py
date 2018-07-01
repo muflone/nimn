@@ -65,6 +65,7 @@ class Application(object):
         for tool in TOOLS_LIST:
             tools[tool].interface = self.arguments.interface
             tools[tool].checks = self.arguments.checks
+            tools[tool].timeout = self.arguments.timeout
         # Cycle over all the network addresses
         for address in network.range():
             # Cycle over all the available tools

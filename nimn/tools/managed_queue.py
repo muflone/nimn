@@ -33,6 +33,7 @@ class ManagedQueue(object):
         # Default tool values
         self.interface = None
         self.checks = 1
+        self.timeout = None
         # Set callback function
         self.cb_function = cb_function
         # Queue for requests and responses
