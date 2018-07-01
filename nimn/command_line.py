@@ -54,8 +54,8 @@ class CommandLine(object):
                                  dest='version',
                                  action='version',
                                  version='{app} {version}'.format(
-                                 app=APP_NAME,
-                                 version=APP_VERSION),
+                                     app=APP_NAME,
+                                     version=APP_VERSION),
                                  help='show version number')
         self.parser.add_argument('-v', '--verbose', dest='verbose_level',
                                  action='store_const',
@@ -67,12 +67,12 @@ class CommandLine(object):
                                  const=VERBOSE_LEVEL_QUIET,
                                  help='hide error and information messages')
         self.parser.add_argument('network',
-                                type=str,
-                                nargs='*',
-                                action='store',
-                                help='network name or network range')
+                                 type=str,
+                                 nargs='*',
+                                 action='store',
+                                 help='network name or network range')
         self.parser.add_argument('-l', '--list-configurations',
-                                dest='list_configurations',
-                                action='store_true',
-                                help='list saved network configurations')
+                                 dest='list_configurations',
+                                 action='store_true',
+                                 help='list saved network configurations')
         self.arguments = self.parser.parse_args()
