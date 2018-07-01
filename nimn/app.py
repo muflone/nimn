@@ -70,10 +70,8 @@ class Application(object):
         for address in network.range():
             # Cycle over all the available tools
             for tool in TOOLS_LIST:
-                # If the tool was enabled then execute the checks
-                if tool in self.arguments.tools:
-                    # Check the host using the tool
-                    tools[tool].execute(address)
+                # Check the host using the tool
+                tools[tool].execute(address)
         # Start the tools threads
         for tool in TOOLS_LIST:
             tools[tool].start()
@@ -85,14 +83,8 @@ class Application(object):
         for address in network.range():
             data = {}
             for tool in TOOLS_LIST:
-                if self.arguments.all_tools:
-                    # Print results for all the tools, not only the enabled
-                    data[tool] = (tools[tool].results[address]
-                                  if tool in self.arguments.tools
-                                  else None)
-                elif tool in self.arguments.tools:
-                    # Print results only for the enabled tools
-                    data[tool] = tools[tool].results[address]
+                # Get results for the tool
+                data[tool] = tools[tool].results[address]
             results[address] = data
         # Print results
         for data in results:

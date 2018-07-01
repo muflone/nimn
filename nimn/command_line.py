@@ -4,7 +4,6 @@ from .constants import (
   VERBOSE_LEVEL_QUIET,
   VERBOSE_LEVEL_NORMAL,
   VERBOSE_LEVEL_MAX,
-  TOOLS_DEFAULT,
   TOOLS_LIST,
   APP_NAME,
   APP_VERSION,
@@ -34,18 +33,6 @@ class CommandLine(object):
                                  dest='timeout',
                                  action='store',
                                  help='max timeout in seconds for each request')
-        self.parser.add_argument('-t', '--tools',
-                                 type=str,
-                                 default=TOOLS_DEFAULT,
-                                 dest='tools',
-                                 action='store',
-                                 nargs='+',
-                                 choices=TOOLS_LIST,
-                                 help='tools to use for checks')
-        self.parser.add_argument('-a', '--all',
-                                 dest='all_tools',
-                                 action='store_true',
-                                 help='show all tools in response')
         self.parser.add_argument('-C', '--configuration',
                                  dest='configuration',
                                  action='store_true',
