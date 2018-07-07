@@ -123,7 +123,7 @@ class Application(object):
                     detail_msg = ('MAC address lost: {mac}').format(
                                       mac=compare[ip][MAC_ADDRESS])
                 elif compare[ip][MAC_ADDRESS] != results[ip][TOOL_ARPING]:
-                    host_symbol = '~'
+                    host_symbol = 'M'
                     detail_msg = ('MAC address changed: old {mac}').format(
                                       mac=compare[ip][MAC_ADDRESS])
                 elif compare[ip][HOSTNAME] != results[ip][TOOL_HOSTNAME]:
