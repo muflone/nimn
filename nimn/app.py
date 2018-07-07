@@ -118,7 +118,7 @@ class Application(object):
                     # New host
                     host_symbol = '+'
                     detail_msg = 'New host added'
-                elif not host_mac and compare[ip][MAC_ADDRESS]:
+                elif host_mac == '-' and compare[ip][MAC_ADDRESS]:
                     host_symbol = '-'
                     detail_msg = ('MAC address lost: {mac}').format(
                                       mac=compare[ip][MAC_ADDRESS])
