@@ -21,7 +21,7 @@ class CommandLine(object):
                                  dest='interface',
                                  action='store',
                                  help='interface name to use')
-        self.parser.add_argument('-c', '--count',
+        self.parser.add_argument('-n', '--count',
                                  type=int,
                                  default=1,
                                  dest='checks',
