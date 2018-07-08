@@ -68,8 +68,22 @@ class Application(object):
             tools[tool].interface = self.arguments.interface
             tools[tool].checks = self.arguments.checks
             tools[tool].timeout = self.arguments.timeout
+        results = OrderedDict()
         while True:
-            results = self.do_scan(network)
+            scan_results = self.do_scan(network)
+            # Sum results in collect option
+            if self.arguments.collect:
+                for ip in scan_results:
+                    # Add missing host
+                    if ip not in results:
+                        results[ip] = scan_results[ip]
+                    # Merge results
+                    if scan_results[ip][TOOL_ARPING] is not None:
+                        results[ip][TOOL_ARPING] = scan_results[ip][TOOL_ARPING]
+                    if scan_results[ip][TOOL_HOSTNAME] != ip:
+                        results[ip][TOOL_HOSTNAME] = scan_results[ip][TOOL_HOSTNAME]
+            else:
+                results = scan_results
             # Compare data or print results
             if self.arguments.timestamp is not None:
                 compare = self.dbhosts.get_detections(self.arguments.timestamp)
@@ -140,6 +154,10 @@ class Application(object):
             for network in self.dbhosts.list_networks():
                 printf('  {network}'.format(network=network))
             self.command_line.parser.exit(1)
+        elif self.arguments.collect and not self.arguments.watch:
+            # Check collect option
+            self.command_line.parser.error(
+                'The collect (--collect) option requires watch (--watch) mode')
         elif not self.arguments.network:
             # Missing both networks list and network name
             self.command_line.parser.error('Network must be provided')

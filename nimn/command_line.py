@@ -39,6 +39,11 @@ class CommandLine(object):
                                  dest='watch',
                                  action='store',
                                  help='watch mode (wait time in seconds)')
+        self.parser.add_argument('-c', '--collect',
+                                 default=None,
+                                 dest='collect',
+                                 action='store_true',
+                                 help='collect data during watch mode')
         self.parser.add_argument('-C', '--configuration',
                                  dest='configuration',
                                  action='store_true',
