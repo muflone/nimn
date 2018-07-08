@@ -26,6 +26,7 @@ from .dbhosts import DBHosts, MAC_ADDRESS, HOSTNAME
 from .command_line import CommandLine
 from .network import Network, network_range, network_cidr
 from .tools import tools
+from .printf import printf
 
 class Application(object):
     def __init__(self):
@@ -133,7 +134,7 @@ class Application(object):
                 else:
                     host_symbol = ' '
             if host_symbol != ' ' or not self.arguments.changed:
-                print('{symbol} {ip:20}{mac:20}{hostname:30}{message}'.format(
+                printf('{symbol} {ip:20}{mac:20}{hostname:30}{message}'.format(
                     symbol=host_symbol,
                     ip=ip,
                     mac=host_mac,
@@ -147,9 +148,9 @@ class Application(object):
         """Check command line arguments"""
         if self.arguments.list_configurations:
             # List networks list
-            print('Network configurations list:')
+            printf('Network configurations list:')
             for network in self.dbhosts.list_networks():
-                print('  {network}'.format(network=network))
+                printf('  {network}'.format(network=network))
             self.command_line.parser.exit(1)
         elif not self.arguments.network:
             # Missing both networks list and network name
