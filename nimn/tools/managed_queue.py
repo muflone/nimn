@@ -34,15 +34,18 @@ class ManagedQueue(object):
         self.interface = None
         self.checks = 1
         self.timeout = None
+        self.max_workers = workers
         # Set callback function
         self.cb_function = cb_function
+
+    def prepare(self):
         # Queue for requests and responses
         self.queue_incoming = queue.Queue()
         self.queue_results = queue.Queue()
         self.results = {}
         # Setup running worker threads
         self.workers = []
-        for _ in range(workers):
+        for _ in range(self.max_workers):
             worker_thread = threading.Thread(target=self.consumer)
             self.workers.append(worker_thread)
 

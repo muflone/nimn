@@ -33,6 +33,12 @@ class CommandLine(object):
                                  dest='timeout',
                                  action='store',
                                  help='max timeout in seconds for each request')
+        self.parser.add_argument('-w', '--watch',
+                                 type=int,
+                                 default=None,
+                                 dest='watch',
+                                 action='store',
+                                 help='watch mode (wait time in seconds)')
         self.parser.add_argument('-C', '--configuration',
                                  dest='configuration',
                                  action='store_true',
