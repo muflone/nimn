@@ -27,7 +27,7 @@ class CommandLine(object):
                                  dest='checks',
                                  action='store',
                                  help='max checks to do for each tool')
-        self.parser.add_argument('-w', '--timeout',
+        self.parser.add_argument('-t', '--timeout',
                                  type=int,
                                  default=None,
                                  dest='timeout',
