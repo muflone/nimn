@@ -19,10 +19,20 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
+import sys
+import os
+
 from nimn.app import Application
 
 if __name__ == '__main__':
     # Start the application
-    app = Application()
-    app.startup()
-    app.run()
+    try:
+        app = Application()
+        app.startup()
+        app.run()
+    except KeyboardInterrupt:
+        print('')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
