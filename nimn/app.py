@@ -189,6 +189,7 @@ class Application(object):
         if not os.path.getsize(FILE_HOSTS) or self.arguments.create_schema:
             os.unlink(FILE_HOSTS)
         if not os.path.exists(FILE_HOSTS):
+            self.dbhosts.close()
             self.dbhosts = DBHosts(self.settings)
             self.dbhosts.create_schema()
         # Check command line arguments
