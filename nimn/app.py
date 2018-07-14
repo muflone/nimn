@@ -78,10 +78,12 @@ class Application(object):
                     if ip not in results:
                         results[ip] = scan_results[ip]
                     # Merge results
-                    if scan_results[ip][TOOL_ARPING] is not None:
-                        results[ip][TOOL_ARPING] = scan_results[ip][TOOL_ARPING]
-                    if scan_results[ip][TOOL_HOSTNAME] != ip:
-                        results[ip][TOOL_HOSTNAME] = scan_results[ip][TOOL_HOSTNAME]
+                    if scan_results[ip][TOOL_ARPING].data is not None:
+                        results[ip][TOOL_ARPING].data = (
+                            scan_results[ip][TOOL_ARPING].data)
+                    if scan_results[ip][TOOL_HOSTNAME].data != ip:
+                        results[ip][TOOL_HOSTNAME].data = (
+                            scan_results[ip][TOOL_HOSTNAME].data)
             else:
                 results = scan_results
             # Compare data or print results
@@ -92,11 +94,11 @@ class Application(object):
             printf('-' * 120)
             for ip in results:
                 detail_msg = ''
-                host_mac = results[ip][TOOL_ARPING]
+                host_mac = results[ip][TOOL_ARPING].data
                 if host_mac is None:
                     host_mac = '-'
-                host_hostname = results[ip][TOOL_HOSTNAME]
-                host_ping = results[ip][TOOL_PING]
+                host_hostname = results[ip][TOOL_HOSTNAME].data
+                host_ping = results[ip][TOOL_PING].data
                 if self.arguments.timestamp is None:
                     # No compare
                     host_symbol = '>'
@@ -111,18 +113,20 @@ class Application(object):
                         # New host
                         host_symbol = '+'
                         detail_msg = 'New host added'
-                    elif host_mac == '-' and compare[ip][MAC_ADDRESS]:
+                    elif host_mac == '-' and compare[ip][MAC_ADDRESS].data:
                         host_symbol = '-'
                         detail_msg = ('MAC address lost: {mac}').format(
-                                          mac=compare[ip][MAC_ADDRESS])
-                    elif compare[ip][MAC_ADDRESS] != results[ip][TOOL_ARPING]:
+                                          mac=compare[ip][MAC_ADDRESS].data)
+                    elif (compare[ip][MAC_ADDRESS].data !=
+                            results[ip][TOOL_ARPING].data):
                         host_symbol = 'M'
                         detail_msg = ('MAC address changed: old {mac}').format(
-                                          mac=compare[ip][MAC_ADDRESS])
-                    elif compare[ip][HOSTNAME] != results[ip][TOOL_HOSTNAME]:
+                                          mac=compare[ip][MAC_ADDRESS].data)
+                    elif (compare[ip][HOSTNAME].data !=
+                            results[ip][TOOL_HOSTNAME].data):
                         host_symbol = 'h'
                         detail_msg = ('Hostname changed: old {old}').format(
-                                          old=compare[ip][HOSTNAME])
+                                          old=compare[ip][HOSTNAME].data)
                     else:
                         host_symbol = ' '
                 if host_symbol != ' ' or not self.arguments.changed:
@@ -189,6 +193,7 @@ class Application(object):
         # Save detections
         for ip in results:
             self.dbhosts.add_detection(ip=ip,
-                                       mac=results[ip][TOOL_ARPING],
-                                       hostname=results[ip][TOOL_HOSTNAME])
+                                       mac=results[ip][TOOL_ARPING].data,
+                                       hostname=results[ip][TOOL_HOSTNAME].data
+                                      )
         return results

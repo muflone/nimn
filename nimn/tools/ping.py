@@ -22,6 +22,7 @@ import subprocess
 import platform
 
 from .managed_queue import ManagedQueue
+from .tool_results import ToolResults
 
 NUM_WORKERS = 20
 
@@ -46,6 +47,6 @@ class Ping(ManagedQueue):
         command.append(address)
         process = subprocess.Popen(command,
                                    stdout=subprocess.PIPE,
-                                   stderr = subprocess.PIPE)
-        process.wait()
-        return process.poll() == 0
+                                   stderr=subprocess.PIPE)
+        (stdout, stderr) = process.communicate()
+        return ToolResults(process.poll() == 0, command, stdout, stderr)

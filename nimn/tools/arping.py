@@ -23,6 +23,7 @@ import platform
 import re
 
 from .managed_queue import ManagedQueue
+from .tool_results import ToolResults
 
 NUM_WORKERS = 10
 
@@ -63,4 +64,4 @@ class ARPing(ManagedQueue):
                 if matches:
                     mac_address = str(matches[0])
                     break
-        return mac_address
+        return ToolResults(mac_address, command, stdout, stderr)

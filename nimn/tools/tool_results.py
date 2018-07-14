@@ -18,17 +18,10 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
-import socket
+class ToolResults(object):
+    def __init__(self, data, command, output, error):
+        self.data = data
+        self.command = command
+        self.output = output
+        self.error = error
 
-from .managed_queue import ManagedQueue
-from .tool_results import ToolResults
-
-NUM_WORKERS = 10
-
-
-class Hostname(ManagedQueue):
-    def __init__(self):
-        ManagedQueue.__init__(self, self.do_process, NUM_WORKERS)
-
-    def do_process(self, address):
-        return ToolResults(socket.getfqdn(address), (), None, None)
