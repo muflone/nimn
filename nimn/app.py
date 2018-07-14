@@ -18,10 +18,12 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
+import os.path
 import time
 from collections import OrderedDict
 
 from .constants import (
+    FILE_HOSTS,
     TOOLS_LIST,
     TOOL_PING,
     TOOL_ARPING,
@@ -42,9 +44,9 @@ class Application(object):
         """Create the application object"""
         self.command_line = CommandLine()
         self.arguments = self.command_line.arguments
-        self.dbhosts = DBHosts()
-        self.check_command_line()
         self.settings = Settings(self.command_line)
+        self.dbhosts = DBHosts(self.settings)
+        self.check_command_line()
 
     def startup(self):
         """Configure the application during the startup"""
@@ -183,6 +185,13 @@ class Application(object):
         self.arguments.verbose_level = min(max(self.arguments.verbose_level,
                                                VERBOSE_LEVEL_QUIET),
                                            VERBOSE_LEVEL_MAX)
+        # If no database exists create it
+        if not os.path.getsize(FILE_HOSTS) or self.arguments.create_schema:
+            os.unlink(FILE_HOSTS)
+        if not os.path.exists(FILE_HOSTS):
+            self.dbhosts = DBHosts(self.settings)
+            self.dbhosts.create_schema()
+        # Check command line arguments
         if self.arguments.list_configurations:
             # List networks list
             printf('Network configurations list:')

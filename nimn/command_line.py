@@ -80,4 +80,8 @@ class CommandLine(object):
                                  dest='list_configurations',
                                  action='store_true',
                                  help='list saved network configurations')
+        self.parser.add_argument('--create-schema',
+                                 dest='create_schema',
+                                 action='store_true',
+                                 help='create the database schema')
         self.arguments = self.parser.parse_args()

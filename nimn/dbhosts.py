@@ -25,17 +25,15 @@ from .constants import FILE_HOSTS
 from .network import Network
 
 import sqlite3
-import os.path
 import time
 
 
 class DBHosts(object):
-    def __init__(self):
-        if not os.path.exists(FILE_HOSTS):
-            self.create_schema()
+    def __init__(self, settings):
         self.connection = sqlite3.connect(FILE_HOSTS)
         self.connection.row_factory = sqlite3.Row
         self.cursor = self.connection.cursor()
+        self.settings = settings
 
     def close(self):
         """Close the database connection"""
@@ -44,8 +42,27 @@ class DBHosts(object):
 
     def create_schema(self):
         """Create the database schema"""
-        # TODO: create schema
-        pass
+        self.settings.log_verbose('Creating database schema')
+        self.settings.log_verbose_max('Creating table detections')
+        self.cursor.execute('CREATE TABLE "detections" ('
+                            '  "timestamp" INTEGER NOT NULL,'
+                            '  "ip" TEXT NOT NULL,'
+                            '  "mac" TEXT NULL,'
+                            '  "hostname" TEXT NOT NULL,'
+                            '  PRIMARY KEY (timestamp, ip)'
+                            ')'
+                           )
+        self.settings.log_verbose_max('Creating table networks')
+        self.cursor.execute('CREATE TABLE "networks" ('
+                            '  "name" TEXT NOT NULL,'
+                            '  "ip_starting" TEXT NOT NULL,'
+                            '  "ip_ending" TEXT NOT NULL,'
+                            '  PRIMARY KEY (name)'
+                            ')'
+                           )
+        self.settings.log_verbose_max('Saving schema')
+        self.connection.commit()
+        self.settings.log_verbose_max('Database schema created')
 
     def list_networks(self):
         results = {}
