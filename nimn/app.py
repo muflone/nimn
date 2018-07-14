@@ -187,9 +187,9 @@ class Application(object):
                                            VERBOSE_LEVEL_MAX)
         # If no database exists create it
         if not os.path.getsize(FILE_HOSTS) or self.arguments.create_schema:
+            self.dbhosts.close()
             os.unlink(FILE_HOSTS)
         if not os.path.exists(FILE_HOSTS):
-            self.dbhosts.close()
             self.dbhosts = DBHosts(self.settings)
             self.dbhosts.create_schema()
         # Check command line arguments
