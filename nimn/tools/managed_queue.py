@@ -51,7 +51,6 @@ class ManagedQueue(object):
 
     def execute(self, data):
         """Add new data to the queue"""
-        # print('add new data %s to queue %s' % (data, self.__class__.__name__))
         self.queue_incoming.put(data)
 
     def consumer(self):
@@ -60,7 +59,6 @@ class ManagedQueue(object):
             while True:
                 # Get the next data
                 data = self.queue_incoming.get_nowait()
-                # print('get data %s from queue %s' % (data, self.__class__.__name__))
                 self.queue_results.put((data, self.cb_function(data)))
         except queue.Empty:
             # No more data to process

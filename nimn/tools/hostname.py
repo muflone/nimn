@@ -31,4 +31,4 @@ class Hostname(ManagedQueue):
         ManagedQueue.__init__(self, self.do_process, NUM_WORKERS)
 
     def do_process(self, address):
-        return ToolResults(socket.getfqdn(address), (), None, None)
+        return ToolResults(socket.getfqdn(address), '', '', '')
