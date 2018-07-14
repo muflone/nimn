@@ -1,13 +1,12 @@
 import argparse
 
 from .constants import (
-  VERBOSE_LEVEL_QUIET,
-  VERBOSE_LEVEL_NORMAL,
-  VERBOSE_LEVEL_MAX,
-  TOOLS_LIST,
-  APP_NAME,
-  APP_VERSION,
-  APP_DESCRIPTION,
+    VERBOSE_LEVEL_QUIET,
+    VERBOSE_LEVEL_NORMAL,
+    TOOLS_LIST,
+    APP_NAME,
+    APP_VERSION,
+    APP_DESCRIPTION,
 )
 
 
@@ -56,8 +55,7 @@ class CommandLine(object):
                                      version=APP_VERSION),
                                  help='show version number')
         self.parser.add_argument('-v', '--verbose', dest='verbose_level',
-                                 action='store_const',
-                                 const=VERBOSE_LEVEL_MAX,
+                                 action='count',
                                  help='show error and information messages')
         self.parser.add_argument('-q', '--quiet',
                                  dest='verbose_level',

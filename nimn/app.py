@@ -21,7 +21,14 @@
 import time
 from collections import OrderedDict
 
-from .constants import TOOLS_LIST, TOOL_PING, TOOL_ARPING, TOOL_HOSTNAME
+from .constants import (
+    TOOLS_LIST,
+    TOOL_PING,
+    TOOL_ARPING,
+    TOOL_HOSTNAME,
+    VERBOSE_LEVEL_QUIET,
+    VERBOSE_LEVEL_MAX
+)
 from .settings import Settings
 from .dbhosts import DBHosts, MAC_ADDRESS, HOSTNAME
 from .command_line import CommandLine
@@ -152,6 +159,9 @@ class Application(object):
 
     def check_command_line(self):
         """Check command line arguments"""
+        self.arguments.verbose_level = min(max(self.arguments.verbose_level,
+                                               VERBOSE_LEVEL_QUIET),
+                                           VERBOSE_LEVEL_MAX)
         if self.arguments.list_configurations:
             # List networks list
             printf('Network configurations list:')
