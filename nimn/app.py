@@ -27,6 +27,7 @@ from .constants import (
     TOOL_ARPING,
     TOOL_HOSTNAME,
     VERBOSE_LEVEL_QUIET,
+    VERBOSE_LEVEL_HIGH,
     VERBOSE_LEVEL_MAX
 )
 from .settings import Settings
@@ -78,6 +79,26 @@ class Application(object):
         results = OrderedDict()
         while True:
             scan_results = self.do_scan(network)
+            # Prints command, output and errors
+            is_verbose = (self.command_line.arguments.verbose_level >=
+                          VERBOSE_LEVEL_HIGH)
+            for ip in scan_results:
+                for tool in TOOLS_LIST:
+                    if is_verbose or scan_results[ip][tool].error:
+                        self.settings.log_normal(
+                            'IP: {ip} TOOL: {tool}'.format(ip=ip, tool=tool))
+                    self.settings.log_verbose(
+                        'Command line for IP {ip} [{tool}]: {data}'.format(
+                            ip=ip,
+                            tool=tool,
+                            data=scan_results[ip][tool].command))
+                    self.settings.log_verbose_max(
+                        'Output: {output}'.format(
+                            output=scan_results[ip][tool].output))
+                    if is_verbose or scan_results[ip][tool].error:
+                        self.settings.log_normal(
+                            'Error: {error}'.format(
+                                error=scan_results[ip][tool].error))
             # Sum results in collect option
             if self.arguments.collect:
                 for ip in scan_results:
