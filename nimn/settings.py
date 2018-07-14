@@ -28,13 +28,16 @@ if sys.version_info.major == 3:
 else:
     import ConfigParser as configparser
 
+from .printf import printf
 from .constants import (
   VERBOSE_LEVEL_NORMAL,
+  VERBOSE_LEVEL_HIGH,
   VERBOSE_LEVEL_MAX,
   FILE_SETTINGS,
 )
 
 SECTION_APPLICATION = 'application'
+
 
 class Settings(object):
     def __init__(self, command_line):
@@ -42,8 +45,7 @@ class Settings(object):
         # Parse settings from the configuration file
         self.config = configparser.RawConfigParser()
         self.filename = FILE_SETTINGS
-        self.logText('Loading settings from %s' % self.filename,
-                     VERBOSE_LEVEL_MAX)
+        self.log_verbose('Loading settings from %s' % self.filename)
         self.config.read(self.filename)
 
     def get(self, section, option, default=None):
@@ -99,12 +101,26 @@ class Settings(object):
     def save(self):
         """Save the whole configuration"""
         file_settings = open(self.filename, mode='w')
-        self.logText('Saving settings to %s' % self.filename,
-                     VERBOSE_LEVEL_MAX)
+        self.log_verbose('Saving settings to %s' % self.filename)
         self.config.write(file_settings)
         file_settings.close()
 
-    def logText(self, text, verbose_level=VERBOSE_LEVEL_NORMAL):
+    def log_text(self, text):
+        """Print a text with current date and time"""
+        printf(objects='[%s] %s' % (time.strftime('%Y/%m/%d %H:%M:%S'), text),
+               file=sys.stderr)
+
+    def log_normal(self, text, verbose_level=VERBOSE_LEVEL_NORMAL):
         """Print a text with current date and time based on verbose level"""
-        if verbose_level <= self.command_line.arguments.verbose_level:
-            print('[%s] %s' % (time.strftime('%Y/%m/%d %H:%M:%S'), text))
+        if self.command_line.arguments.verbose_level >= VERBOSE_LEVEL_NORMAL:
+            self.log_text(text)
+
+    def log_verbose(self, text):
+        """Print a text with current date and time based on verbose level"""
+        if self.command_line.arguments.verbose_level >= VERBOSE_LEVEL_HIGH:
+            self.log_text(text)
+
+    def log_verbose_max(self, text):
+        """Print a text with current date and time based on verbose level"""
+        if self.command_line.arguments.verbose_level >= VERBOSE_LEVEL_MAX:
+            self.log_text(text)
