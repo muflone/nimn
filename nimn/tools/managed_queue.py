@@ -19,13 +19,12 @@
 ##
 
 import sys
+import threading
 
 if sys.version_info.major == 3:
     import queue
 else:
     import Queue as queue
-
-import threading
 
 
 class ManagedQueue(object):

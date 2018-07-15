@@ -18,14 +18,14 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
-MAC_ADDRESS = 'MAC'
-HOSTNAME = 'HOSTNAME'
-
 from .constants import FILE_HOSTS
 from .network import Network
 
 import sqlite3
 import time
+
+MAC_ADDRESS = 'MAC'
+HOSTNAME = 'HOSTNAME'
 
 
 class DBHosts(object):
