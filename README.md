@@ -20,8 +20,8 @@ System Requirements
 
 External tools:
 
-* ping (with NET capabilities)
-* arping (with NET capabilities)
+* ping with NET RAW capabilities (see below)
+* arping with NET RAW capabilities (see below)
 
 Installation
 ------------
@@ -47,3 +47,16 @@ If the application is not installed please use:
     python2 nimn.py
 
 If the application was installed simply use the nimn command.
+
+NET RAW capabilities
+--------------------
+
+Under GNU/Linux the ping and arping external tools need to have CAP_NET_RAW
+capabilities which can be accomplished using:
+
+    setcap 'cap_net_raw+ep' PATH_TO_TOOL
+
+If the binary tools are under /usr/bin for example you can use:
+
+    setcap 'cap_net_raw+ep' /usr/bin/ping
+    setcap 'cap_net_raw+ep' /usr/bin/arping
