@@ -24,7 +24,7 @@ from xdg import BaseDirectory
 
 # Application constants
 APP_NAME = 'New in my Net'
-APP_VERSION = '0.1.0'
+APP_VERSION = '0.2.0'
 APP_DESCRIPTION = 'Find new devices in my network'
 APP_ID = 'nimn.muflone.com'
 APP_URL = 'http://www.muflone.com/nimn/'
