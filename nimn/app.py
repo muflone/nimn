@@ -30,7 +30,7 @@ from .constants import (
     TOOL_HOSTNAME,
     VERBOSE_LEVEL_QUIET,
     VERBOSE_LEVEL_HIGH,
-    VERBOSE_LEVEL_MAX
+    VERBOSE_LEVEL_DEBUG
 )
 from .settings import Settings
 from .dbhosts import DBHosts, MAC_ADDRESS, HOSTNAME
@@ -182,9 +182,16 @@ class Application(object):
 
     def check_command_line(self):
         """Check command line arguments"""
+        # Check verbose level
         self.arguments.verbose_level = min(max(self.arguments.verbose_level,
                                                VERBOSE_LEVEL_QUIET),
-                                           VERBOSE_LEVEL_MAX)
+                                           VERBOSE_LEVEL_DEBUG)
+        self.settings.log_verbose(
+            'Setting verbose level to {level} {info}'.format(
+                level=self.arguments.verbose_level,
+                info=('QUIET', 'NORMAL', 'VERBOSE', 'MAX', 'DEBUG')[
+                    self.arguments.verbose_level]
+            ))
         # If no database exists create it
         if not os.path.getsize(FILE_HOSTS) or self.arguments.create_schema:
             self.dbhosts.close()

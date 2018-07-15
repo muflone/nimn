@@ -33,6 +33,7 @@ from .constants import (
   VERBOSE_LEVEL_NORMAL,
   VERBOSE_LEVEL_HIGH,
   VERBOSE_LEVEL_MAX,
+  VERBOSE_LEVEL_DEBUG,
   FILE_SETTINGS,
 )
 
@@ -123,4 +124,9 @@ class Settings(object):
     def log_verbose_max(self, text):
         """Print a text with current date and time based on verbose level"""
         if self.command_line.arguments.verbose_level >= VERBOSE_LEVEL_MAX:
+            self.log_text(text)
+
+    def log_verbose_debug(self, text):
+        """Print a text with current date and time based on verbose level"""
+        if self.command_line.arguments.verbose_level >= VERBOSE_LEVEL_DEBUG:
             self.log_text(text)
