@@ -36,8 +36,10 @@ from .settings import Settings
 from .dbhosts import DBHosts, MAC_ADDRESS, HOSTNAME
 from .command_line import CommandLine
 from .network import Network, network_range, network_cidr
-from .tools import tools
 from .printf import printf
+from .tools.ping import Ping
+from .tools.arping import ARPing
+from .tools.hostname import Hostname
 
 class Application(object):
     def __init__(self):
@@ -50,7 +52,11 @@ class Application(object):
 
     def startup(self):
         """Configure the application during the startup"""
-        pass
+        self.tools = {
+            TOOL_PING: Ping(self.settings),
+            TOOL_ARPING: ARPing(self.settings),
+            TOOL_HOSTNAME: Hostname(self.settings),
+        }
 
     def run(self):
         """Execute the application"""
@@ -75,9 +81,9 @@ class Application(object):
                               ip2=ip2)
         # Set tools parameters
         for tool in TOOLS_LIST:
-            tools[tool].interface = self.arguments.interface
-            tools[tool].checks = self.arguments.checks
-            tools[tool].timeout = self.arguments.timeout
+            self.tools[tool].interface = self.arguments.interface
+            self.tools[tool].checks = self.arguments.checks
+            self.tools[tool].timeout = self.arguments.timeout
         results = OrderedDict()
         while True:
             scan_results = self.do_scan(network)
@@ -217,26 +223,26 @@ class Application(object):
     def do_scan(self, network):
         for tool in TOOLS_LIST:
             # Prepare the workers
-            tools[tool].prepare()
+            self.tools[tool].prepare()
         # Cycle over all the network addresses
         for address in network.range():
             # Cycle over all the available tools
             for tool in TOOLS_LIST:
                 # Check the host using the tool
-                tools[tool].execute(address)
+                self.tools[tool].execute(address)
         # Start the tools threads
         for tool in TOOLS_LIST:
-            tools[tool].start()
+            self.tools[tool].start()
         # Awaits the tools to complete
         for tool in TOOLS_LIST:
-            tools[tool].process()
+            self.tools[tool].process()
         # Sort data and print results
         results = OrderedDict()
         for address in network.range():
             data = {}
             for tool in TOOLS_LIST:
                 # Get results for the tool
-                data[tool] = tools[tool].results[address]
+                data[tool] = self.tools[tool].results[address]
             results[address] = data
         # Save detections
         for ip in results:

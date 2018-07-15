@@ -29,12 +29,12 @@ import threading
 
 
 class ManagedQueue(object):
-    def __init__(self, cb_function, workers):
+    def __init__(self, cb_function, settings):
         # Default tool values
         self.interface = None
         self.checks = 1
         self.timeout = None
-        self.max_workers = workers
+        self.max_workers = settings.command_line.arguments.workers
         # Set callback function
         self.cb_function = cb_function
 

@@ -25,12 +25,10 @@ import re
 from .managed_queue import ManagedQueue
 from .tool_results import ToolResults
 
-NUM_WORKERS = 10
-
 
 class ARPing(ManagedQueue):
-    def __init__(self):
-        ManagedQueue.__init__(self, self.do_process, NUM_WORKERS)
+    def __init__(self, settings):
+        ManagedQueue.__init__(self, self.do_process, settings)
 
     def do_process(self, address):
         if platform.system().lower() == 'windows':

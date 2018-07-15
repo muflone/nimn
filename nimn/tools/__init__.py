@@ -17,16 +17,3 @@
 #  with this program; if not, write to the Free Software Foundation, Inc.,
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
-
-from .ping import Ping
-from .arping import ARPing
-from .hostname import Hostname
-
-from ..constants import TOOL_PING, TOOL_ARPING, TOOL_HOSTNAME
-
-
-tools = {
-  TOOL_PING: Ping(),
-  TOOL_ARPING: ARPing(),
-  TOOL_HOSTNAME: Hostname(),
-}

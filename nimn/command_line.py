@@ -43,6 +43,12 @@ class CommandLine(object):
                                  dest='collect',
                                  action='store_true',
                                  help='collect data during watch mode')
+        self.parser.add_argument('-W', '--workers',
+                                 type=int,
+                                 default=10,
+                                 dest='workers',
+                                 action='store',
+                                 help='number of parallel workers')
         self.parser.add_argument('-C', '--configuration',
                                  dest='configuration',
                                  action='store_true',

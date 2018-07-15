@@ -24,12 +24,10 @@ import platform
 from .managed_queue import ManagedQueue
 from .tool_results import ToolResults
 
-NUM_WORKERS = 20
-
 
 class Ping(ManagedQueue):
-    def __init__(self):
-        ManagedQueue.__init__(self, self.do_process, NUM_WORKERS)
+    def __init__(self, settings):
+        ManagedQueue.__init__(self, self.do_process, settings)
 
     def do_process(self, address):
         command = ['ping',
