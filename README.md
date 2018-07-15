@@ -14,7 +14,7 @@ New in my net [![Build Status](https://travis-ci.org/muflone/nimn.svg?branch=mas
 System Requirements
 -------------------
 
-* Python 2.x (developed and tested for Python 2.7.5)
+* Python 2.x or 3.x
 * XDG library for Python 2.x
 * Distutils library for Python 2.x (usually shipped with Python distribution)
 
