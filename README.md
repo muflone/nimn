@@ -15,8 +15,8 @@ System Requirements
 -------------------
 
 * Python 2.x or 3.x
-* XDG library for Python 2.x
-* Distutils library for Python 2.x (usually shipped with Python distribution)
+* XDG library for Python
+* Distutils library for Python (usually shipped with Python distribution)
 
 External tools:
 
